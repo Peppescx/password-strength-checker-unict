@@ -1,2 +1,2 @@
 # password-strength-checker-unict
-Quality Development - mini progetto
+in aggiornamento...
