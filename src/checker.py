@@ -3,8 +3,8 @@ Modulo per la verifica della robustezza delle password.
 Fornisce funzioni per analizzare i criteri di sicurezza e esportare i risultati.
 """
 
-import re
 import json
+import re
 
 
 def check_password_strength(password: str) -> str:
