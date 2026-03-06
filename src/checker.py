@@ -4,9 +4,70 @@ Include analisi dettagliata dei criteri e feedback per l'utente.
 """
 
 import json
+import math
+import os
 import re
 import secrets
 import string
+
+
+def calculate_entropy(password: str) -> float:
+    """
+    Calcola l'entropia della password in bit.
+    Formula: E = L * log2(R) dove R è il pool di caratteri usati.
+    """
+    if not password:
+        return 0.0
+
+    pool = 0
+    if re.search("[a-z]", password):
+        pool += 26
+    if re.search("[A-Z]", password):
+        pool += 26
+    if re.search("[0-9]", password):
+        pool += 10
+    if re.search('[!@#$%^&*(),.?":{}|<>]', password):
+        pool += 32
+
+    if pool == 0:
+        return 0.0
+
+    entropy = len(password) * math.log2(pool)
+    return round(entropy, 2)
+
+
+def validate_email(email: str) -> bool:
+    """
+    Verifica se l'email inserita per il report ha un formato valido.
+    Perfetta per testare i casi limite (edge cases).
+    """
+    # Regex standard per la validazione email
+    regex = r"^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+    return bool(re.match(regex, email.lower()))
+
+
+def is_commonly_used(password: str) -> bool:
+    """
+    Controlla se la password è in una lista esterna di password comuni.
+    Il file si trova in data/common_passwords.txt
+    """
+    # Costruiamo il percorso del file in modo che funzioni ovunque
+    base_dir = os.path.dirname(
+        os.path.dirname(__file__)
+    )  # Torna su di 2 livelli dalla cartella src
+    file_path = os.path.join(base_dir, "data", "common_passwords.txt")
+
+    try:
+        if not os.path.exists(file_path):
+            return False  # Se il file non esiste, proseguiamo senza errore
+
+        with open(file_path, "r", encoding="utf-8") as f:
+            # Carichiamo le password in un set per una ricerca velocissima (O(1))
+            common_pwds = {line.strip().lower() for line in f}
+
+        return password.lower() in common_pwds
+    except IOError:
+        return False
 
 
 def generate_secure_password(length: int = 12, use_special: bool = True) -> str:
@@ -49,26 +110,31 @@ def get_password_criteria(password: str) -> dict:
 
 def analyze_password(password: str) -> tuple[str, list[str]]:
     """
-    Analizza la password e restituisce il livello e la lista delle criticità.
+    Analizza la password includendo entropia e controllo leak.
     """
     criteria = get_password_criteria(password)
-    score = 0
-    missing_criteria = []
+    entropy = calculate_entropy(password)
+    score = sum(1 for passed, _ in criteria.values() if passed)
 
-    for key, (passed, message) in criteria.items():
-        if passed:
-            score += 1
-        else:
-            missing_criteria.append(f"Mancante: {message}")
+    missing = [msg for passed, msg in criteria.values() if not passed]
 
-    if score <= 2:
+    # Nuova logica di criticità
+    if is_commonly_used(password):
+        missing.append("CRITICO: Password trovata in database di leak comuni!")
+        return "Pessima", missing
+
+    if entropy < 40:
+        missing.append(f"Entropia bassa ({entropy} bit): troppo prevedibile.")
+
+    # Giudizio finale combinato
+    if score <= 2 or entropy < 30:
         level = "Debole"
-    elif score <= 4:
+    elif score <= 4 or entropy < 60:
         level = "Media"
     else:
         level = "Forte"
 
-    return level, missing_criteria
+    return level, missing
 
 
 def save_report(password: str, filename: str = "result.json") -> bool:
