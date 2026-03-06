@@ -5,6 +5,29 @@ Include analisi dettagliata dei criteri e feedback per l'utente.
 
 import json
 import re
+import secrets
+import string
+
+
+def generate_secure_password(length: int = 12, use_special: bool = True) -> str:
+    """
+    Genera una password sicura basata su criteri personalizzabili.
+    """
+    alphabet = string.ascii_letters + string.digits
+    if use_special:
+        alphabet += '!@#$%^&*(),.?":{}|<>'
+
+    while True:
+        password = "".join(secrets.choice(alphabet) for _ in range(length))
+        # Verifica che la password generata sia effettivamente forte
+        if (
+            any(c.islower() for c in password)
+            and any(c.isupper() for c in password)
+            and any(c.isdigit() for c in password)
+        ):
+            if use_special and not any(c in '!@#$%^&*(),.?":{}|<>' for c in password):
+                continue
+            return password
 
 
 def get_password_criteria(password: str) -> dict:
@@ -48,7 +71,7 @@ def analyze_password(password: str) -> tuple[str, list[str]]:
     return level, missing_criteria
 
 
-def save_result_to_json(password: str, filename: str = "result.json") -> bool:
+def save_report(password: str, filename: str = "result.json") -> bool:
     """
     Genera un report completo e lo salva in formato JSON.
     """
