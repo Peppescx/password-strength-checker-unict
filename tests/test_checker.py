@@ -1,7 +1,5 @@
 """Unit test per il modulo src.checker."""
 
-
-
 from src.checker import (
     analyze_password,
     calculate_entropy,
