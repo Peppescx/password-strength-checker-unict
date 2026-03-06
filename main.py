@@ -1,10 +1,5 @@
-from src.checker import (
-    analyze_password,
-    calculate_entropy,
-    generate_secure_password,
-    save_report,
-    validate_email,
-)
+from src.checker import (analyze_password, calculate_entropy,
+                         generate_secure_password, save_report, validate_email)
 
 
 def main():

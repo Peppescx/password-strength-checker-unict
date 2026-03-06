@@ -1,11 +1,7 @@
 """Unit test per il modulo src.checker."""
 
-from src.checker import (
-    analyze_password,
-    calculate_entropy,
-    is_commonly_used,
-    validate_email,
-)
+from src.checker import (analyze_password, calculate_entropy, is_commonly_used,
+                         validate_email)
 
 
 def test_analyze_password():
