@@ -28,7 +28,7 @@ def check_password_strength(password: str) -> str:
         return "Media"
     return "Forte"
 
-def save_result_to_json(result_data: dict, filename: str = "../result.json") -> bool:
+def save_result_to_json(result_data: dict, filename: str = "result.json") -> bool:
     """Salva il dizionario dei risultati in un file JSON."""
     try:
         with open(filename, 'w', encoding='utf-8') as f:
