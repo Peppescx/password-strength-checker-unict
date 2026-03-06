@@ -152,3 +152,8 @@ def save_report(password: str, filename: str = "result.json") -> bool:
         return True
     except IOError:
         return False
+
+def get_suggestions(password: str) -> list[str]:
+    """Ritorna una lista di consigli per migliorare la password."""
+    # TODO: Aggiungi qui 
+    return []
