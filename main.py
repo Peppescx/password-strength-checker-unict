@@ -23,7 +23,7 @@ def main():
         entropia = calculate_entropy(pwd)
         livello, criticita = analyze_password(pwd)
 
-        print(f"\n--- Analisi Sicurezza ---")
+        print("\n--- Analisi Sicurezza ---")
         print(f"Livello: {livello}")
         print(f"Entropia: {entropia} bit")
 
