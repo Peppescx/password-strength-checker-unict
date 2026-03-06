@@ -2,8 +2,10 @@
 Modulo per la verifica della robustezza delle password.
 Fornisce funzioni per analizzare i criteri di sicurezza e esportare i risultati.
 """
+
 import re
 import json
+
 
 def check_password_strength(password: str) -> str:
     """
@@ -19,7 +21,7 @@ def check_password_strength(password: str) -> str:
         score += 1
     if re.search("[0-9]", password):
         score += 1
-    if re.search("[!@#$%^&*(),.?\":{}|<>]", password):
+    if re.search('[!@#$%^&*(),.?":{}|<>]', password):
         score += 1
 
     if score <= 2:
@@ -28,10 +30,11 @@ def check_password_strength(password: str) -> str:
         return "Media"
     return "Forte"
 
+
 def save_result_to_json(result_data: dict, filename: str = "result.json") -> bool:
     """Salva il dizionario dei risultati in un file JSON."""
     try:
-        with open(filename, 'w', encoding='utf-8') as f:
+        with open(filename, "w", encoding="utf-8") as f:
             json.dump(result_data, f, indent=4)
         return True
     except IOError:
