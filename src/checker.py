@@ -48,25 +48,22 @@ def validate_email(email: str) -> bool:
 
 def is_commonly_used(password: str) -> bool:
     """
-    Controlla se la password è in una lista esterna di password comuni.
-    Il file si trova in data/common_passwords.txt
+    Controlla se la password è in una lista esterna.
+    Versione robusta e approvata da Pylint.
     """
-    # Costruiamo il percorso del file in modo che funzioni ovunque
-    base_dir = os.path.dirname(
-        os.path.dirname(__file__)
-    )  # Torna su di 2 livelli dalla cartella src
-    file_path = os.path.join(base_dir, "data", "common_passwords.txt")
+    # Calcola il percorso assoluto rispetto alla posizione di questo file
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_dir, "..", "data", "common_passwords.txt")
 
     try:
         if not os.path.exists(file_path):
-            return False  # Se il file non esiste, proseguiamo senza errore
+            return False
 
         with open(file_path, "r", encoding="utf-8") as f:
-            # Carichiamo le password in un set per una ricerca velocissima (O(1))
-            common_pwds = {line.strip().lower() for line in f}
+            common_pwds = {line.strip().lower() for line in f if line.strip()}
 
         return password.lower() in common_pwds
-    except IOError:
+    except OSError:  # Specifichiamo l'errore (addio W0718!)
         return False
 
 

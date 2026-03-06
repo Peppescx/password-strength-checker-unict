@@ -1,7 +1,15 @@
 """Unit test per il modulo src.checker."""
 
-from src.checker import (analyze_password, calculate_entropy, is_commonly_used,
-                         validate_email)
+import os
+
+from src.checker import (
+    analyze_password,
+    calculate_entropy,
+    generate_secure_password,
+    is_commonly_used,
+    save_report,
+    validate_email,
+)
 
 
 def test_analyze_password():
@@ -29,3 +37,39 @@ def test_is_commonly_used():
     # Questo funzionerà se hai creato data/common_passwords.txt
     assert is_commonly_used("123456") is True
     assert is_commonly_used("UnaPasswordMoltoRara2026!") is False
+
+
+def test_generate_password_variants():
+    """Testa la generazione con e senza caratteri speciali."""
+    pwd1 = generate_secure_password(length=16, use_special=True)
+    assert len(pwd1) == 16
+
+    pwd2 = generate_secure_password(length=8, use_special=False)
+    assert len(pwd2) == 8
+
+
+def test_analyze_levels():
+    """Testa tutti i rami della funzione analyze_password (per la Coverage)."""
+    # Caso Debole
+    liv, _ = analyze_password("123")
+    assert liv == "Debole"
+
+    # Caso Media - Usiamo una password NON comune (es. aggiungendo un prefisso raro)
+    # "Password123" è nei leak, "Rara_Password_2026" probabilmente no.
+    liv, _ = analyze_password("Zyx_98765")
+    assert liv == "Media"
+
+    # Caso Forte
+    liv, _ = analyze_password("Complessa_!@_99_Z")
+    assert liv == "Forte"
+
+
+def test_save_report_execution():
+    """Testa il salvataggio fisico del file JSON."""
+    test_file = "test_result.json"
+    result = save_report("TestPassword123!", filename=test_file)
+    assert result is True
+    assert os.path.exists(test_file)
+    # Pulizia dopo il test
+    if os.path.exists(test_file):
+        os.remove(test_file)
