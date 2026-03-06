@@ -1,5 +1,20 @@
-**/__pycache__
+# Cartelle di Python (Bytecode)
+**/__pycache__/
 **/*.pyc
-**/.DS_Store
-.coverage
+
+# Ambiente virtuale (IMPORTANTE: aggiungi il punto se la cartella è .venv)
+.venv/
 venv/
+env/
+
+# Risultati dei Test e Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# File di sistema
+**/.DS_Store
+Thumbs.db
+
+# File del progetto
+result.json
