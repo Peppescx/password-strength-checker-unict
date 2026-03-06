@@ -48,7 +48,7 @@ def analyze_password(password: str) -> tuple[str, list[str]]:
     return level, missing_criteria
 
 
-def save_report(password: str, filename: str = "result.json") -> bool:
+def save_result_to_json(password: str, filename: str = "result.json") -> bool:
     """
     Genera un report completo e lo salva in formato JSON.
     """

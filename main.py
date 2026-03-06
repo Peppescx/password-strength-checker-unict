@@ -2,7 +2,7 @@
 Punto di ingresso principale dell'applicazione Password Strength Checker.
 """
 
-from src.checker import check_password_strength, save_result_to_json
+from src.checker import analyze_password, save_result_to_json
 
 
 def main():
@@ -12,19 +12,24 @@ def main():
     # 1. Input dell'utente
     password = input("Inserisci la password da analizzare: ")
 
-    # 2. Elaborazione tramite il modulo in src/
-    risultato = check_password_strength(password)
+    # 2. Elaborazione (spacchettiamo la tupla: livello e lista criticità)
+    livello, criticita = analyze_password(password)
 
-    # 3. Output a video
-    print(f"\nLa robustezza della password è: {risultato}")
+    # 3. Output a video con formattazione dell'array
+    print(f"\nLa robustezza della password è: {livello}")
 
-    # 4. Esempio di esportazione (opzionale)
-    dati_da_salvare = {"password_inserita": password, "livello_robustezza": risultato}
-
-    if save_result_to_json(dati_da_salvare):
-        print("Risultato salvato correttamente in 'result.json'.")
+    if criticita:
+        print("Suggerimenti per migliorare la sicurezza:")
+        for nota in criticita:
+            print(f" - {nota}")
     else:
-        print("Errore durante il salvataggio del file.")
+        print("Ottimo! La password rispetta tutti i criteri.")
+
+    # 4. Esportazione tramite la nuova funzione save_report
+    if save_result_to_json(password):
+        print("\nReport completo salvato correttamente in 'result.json'.")
+    else:
+        print("\nErrore durante il salvataggio del report.")
 
 
 if __name__ == "__main__":
