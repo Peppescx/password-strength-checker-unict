@@ -2,6 +2,7 @@ from src.checker import (
     analyze_password,
     calculate_entropy,
     generate_secure_password,
+    get_strength_bar,
     save_report,
     validate_email,
 )
@@ -22,9 +23,11 @@ def main():
         # Calcolo entropia e analisi
         entropia = calculate_entropy(pwd)
         livello, criticita = analyze_password(pwd)
+        strength_bar = get_strength_bar(pwd)
 
         print("\n--- Analisi Sicurezza ---")
         print(f"Livello: {livello}")
+        print(f"Forza password: {strength_bar}")
         print(f"Entropia: {entropia} bit")
 
         if criticita:
