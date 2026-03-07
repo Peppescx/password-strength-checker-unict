@@ -6,10 +6,10 @@ from src.checker import (
     analyze_password,
     calculate_entropy,
     generate_secure_password,
+    get_strength_bar,
     is_commonly_used,
     save_report,
     validate_email,
-    get_strength_bar,
 )
 
 
