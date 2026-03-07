@@ -160,10 +160,13 @@ def get_strength_bar(password: str) -> str:
     score = min(int((entropy / 80) * 100), 100)
     filled = score // 10
     empty = 10 - filled
-    bar = "█" * filled + "░" * empty
-    return f"{bar} {score}%"    
+    strength_bar = "█" * filled + "░" * empty
+    return f"{strength_bar} {score}%"    
 
 def get_suggestions(password: str) -> list[str]:
     """Ritorna una lista di consigli per migliorare la password."""
     # TODO: Aggiungi qui 
     return []
+
+
+
