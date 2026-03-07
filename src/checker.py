@@ -167,5 +167,5 @@ def get_strength_bar(password: str) -> str:
 
 def get_suggestions(password: str) -> list[str]:
     """Ritorna una lista di consigli per migliorare la password."""
-    # TODO: Aggiungi qui
+    _ = password
     return []
