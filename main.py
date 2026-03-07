@@ -4,7 +4,7 @@ from src.checker import (
     generate_secure_password,
     save_report,
     validate_email,
-    get_strength_bar
+    get_strength_bar,
 )
 
 
@@ -72,4 +72,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    

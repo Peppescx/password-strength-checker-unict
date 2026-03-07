@@ -152,7 +152,8 @@ def save_report(password: str, filename: str = "result.json") -> bool:
         return True
     except IOError:
         return False
-    
+
+
 def get_strength_bar(password: str) -> str:
     """Ritorna una barra grafica della robustezza della password."""
     entropy = calculate_entropy(password)
@@ -161,12 +162,10 @@ def get_strength_bar(password: str) -> str:
     filled = score // 10
     empty = 10 - filled
     strength_bar = "█" * filled + "░" * empty
-    return f"{strength_bar} {score}%"    
+    return f"{strength_bar} {score}%"
+
 
 def get_suggestions(password: str) -> list[str]:
     """Ritorna una lista di consigli per migliorare la password."""
-    # TODO: Aggiungi qui 
+    # TODO: Aggiungi qui
     return []
-
-
-
